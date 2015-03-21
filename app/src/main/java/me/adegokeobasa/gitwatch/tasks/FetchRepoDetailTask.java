@@ -2,7 +2,6 @@ package me.adegokeobasa.gitwatch.tasks;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.os.AsyncTask;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -15,16 +14,19 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import me.adegokeobasa.gitwatch.fragments.RepoDetailFragment;
+import me.adegokeobasa.gitwatch.interfaces.CommitsLoadListener;
 import me.adegokeobasa.gitwatch.models.Commit;
 import me.adegokeobasa.gitwatch.utils.UIUtils;
 
 /**
  * Created by Adegoke Obasa <adegokeobasa@gmail.com> on 3/21/15.
  */
-public class FetchRepoDetailTask extends AsyncTask<String, Void, Void> {
+public class FetchRepoDetailTask {
     ProgressDialog progressDialog;
     Context context;
     private static RequestQueue requestQueue;
+    CommitsLoadListener commitsLoadListener;
+
     public FetchRepoDetailTask(Context context) {
         this.context = context;
         if(requestQueue == null) {
@@ -32,18 +34,15 @@ public class FetchRepoDetailTask extends AsyncTask<String, Void, Void> {
         }
     }
 
-    @Override
     protected void onPreExecute() {
-        super.onPreExecute();
         progressDialog = new ProgressDialog(context);
         progressDialog.setMessage("Getting commits, please wait...");
         progressDialog.setIndeterminate(true);
         progressDialog.show();
     }
 
-    @Override
-    protected Void doInBackground(String... strings) {
-        String url = strings[0];
+    public void execute(String url) {
+        onPreExecute();
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -61,7 +60,10 @@ public class FetchRepoDetailTask extends AsyncTask<String, Void, Void> {
                             RepoDetailFragment.commits.add(commit);
                         }
 
-                        RepoDetailFragment.commitAdapter.notifyDataSetChanged();
+                        if(commitsLoadListener != null) {
+                            commitsLoadListener.load();
+                            commitsLoadListener.updateRepo();
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -76,11 +78,9 @@ public class FetchRepoDetailTask extends AsyncTask<String, Void, Void> {
             }
         });
         requestQueue.add(jsonObjectRequest);
-        return null;
     }
 
-    @Override
-    protected void onPostExecute(Void aVoid) {
-        super.onPostExecute(aVoid);
+    public void setCommitsListener(CommitsLoadListener commitsLoadListener) {
+        this.commitsLoadListener = commitsLoadListener;
     }
 }

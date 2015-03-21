@@ -196,6 +196,11 @@ public class GitWatchProvider extends ContentProvider {
                 result = db.update(GitWatchContract.RepoEntry.TABLE_NAME, contentValues, selection, selectionArgs);
                 break;
             }
+            case REPO_ID:
+                long id = GitWatchContract.RepoEntry.getRepoIdFromUri(uri);
+                selectionArgs = new String[]{String.valueOf(id)};
+                result = db.update(GitWatchContract.RepoEntry.TABLE_NAME, contentValues, repoIdSelection, selectionArgs);
+                break;
             default:
                 throw new UnsupportedOperationException("Unknown Uri: " + uri);
         }

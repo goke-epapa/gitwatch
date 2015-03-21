@@ -4,6 +4,7 @@ package me.adegokeobasa.gitwatch.fragments;
  * Created by Adegoke Obasa <adegokeobasa@gmail.com> on 3/21/15.
  */
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -31,6 +32,7 @@ import java.util.ArrayList;
 import me.adegokeobasa.gitwatch.R;
 import me.adegokeobasa.gitwatch.adapters.CommitAdapter;
 import me.adegokeobasa.gitwatch.data.GitWatchContract;
+import me.adegokeobasa.gitwatch.interfaces.CommitsLoadListener;
 import me.adegokeobasa.gitwatch.models.Commit;
 import me.adegokeobasa.gitwatch.tasks.FetchRepoDetailTask;
 import me.adegokeobasa.gitwatch.utils.ApiHelper;
@@ -38,7 +40,7 @@ import me.adegokeobasa.gitwatch.utils.ApiHelper;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class RepoDetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class RepoDetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, CommitsLoadListener {
 
     private static final int REPO_LOADER = 0;
     ShareActionProvider mShareActionProvider;
@@ -48,6 +50,8 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
     public static CommitAdapter commitAdapter;
     private String repoName;
     private String repoUrl;
+    private long repoId;
+    private boolean dataLoaded;
 
     public RepoDetailFragment() {
     }
@@ -81,7 +85,7 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
             return null;
         }
 
-        int repoId = getActivity().getIntent().getIntExtra(LandingFragment.EXTRA_REPO_ID, 0);
+        repoId = getActivity().getIntent().getIntExtra(LandingFragment.EXTRA_REPO_ID, 0);
 
         Uri repoUri = GitWatchContract.RepoEntry.buildRepoUri(repoId);
 
@@ -105,9 +109,6 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
 
         String url = repoType == GitWatchContract.RepoEntry.TYPE_BITBUCKET ? ApiHelper.getJsonApiUrl(ApiHelper.getBitbucketUrl(repoIdentifier)) : ApiHelper.getJsonApiUrl(ApiHelper.getGithubUrl(repoIdentifier));
 
-        FetchRepoDetailTask repoDetailTask = new FetchRepoDetailTask(getActivity());
-        repoDetailTask.execute(url);
-
         TextView repoUsernameTv = (TextView) getView().findViewById(R.id.detail_repo_username);
         TextView repoNameTv = (TextView) getView().findViewById(R.id.detail_repo_name);
         TextView repoLastUpdateTimeTv = (TextView) getView().findViewById(R.id.detail_repo_last_updated);
@@ -122,6 +123,17 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
             repoUrl = ApiHelper.getGithubShareUrl(repoIdentifier);
             repoImageView.setImageResource(R.drawable.ic_github);
         }
+
+        if(!dataLoaded) {
+            fetchCommits(url);
+            dataLoaded = true;
+        }
+    }
+
+    private void fetchCommits(String url) {
+        FetchRepoDetailTask repoDetailTask = new FetchRepoDetailTask(getActivity());
+        repoDetailTask.setCommitsListener(this);
+        repoDetailTask.execute(url);
     }
 
     @Override
@@ -152,5 +164,19 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
         mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
         if(repoName != null && repoUrl != null)
             mShareActionProvider.setShareIntent(createShareForecastIntent(repoName, repoUrl));
+    }
+
+    @Override
+    public void load() {
+        commitAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void updateRepo() {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(GitWatchContract.RepoEntry.COLUMN_LAST_COMMIT_MSG, commits.get(commits.size() -1).getTitle());
+        getActivity().getContentResolver().update(
+                GitWatchContract.RepoEntry.buildRepoUri(repoId),
+                contentValues, null, null);
     }
 }
