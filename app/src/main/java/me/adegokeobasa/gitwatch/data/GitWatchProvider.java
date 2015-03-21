@@ -33,7 +33,8 @@ public class GitWatchProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        return false;
+        gitWatchDbHelper = new GitWatchDbHelper(getContext());
+        return true;
     }
 
     @Override
