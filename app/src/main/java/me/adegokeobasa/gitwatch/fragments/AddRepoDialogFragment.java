@@ -1,4 +1,4 @@
-package me.adegokeobasa.gitwatch;
+package me.adegokeobasa.gitwatch.fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -10,6 +10,8 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+
+import me.adegokeobasa.gitwatch.R;
 
 /**
  * Created by Adegoke Obasa <adegokeobasa@gmail.com> on 3/21/15.

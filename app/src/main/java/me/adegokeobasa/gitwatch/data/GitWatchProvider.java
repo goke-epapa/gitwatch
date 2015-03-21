@@ -26,6 +26,7 @@ public class GitWatchProvider extends ContentProvider {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = GitWatchContract.CONTENT_AUTHORITY;
         matcher.addURI(authority, GitWatchContract.PATH_REPO, REPO);
+        matcher.addURI(authority, GitWatchContract.PATH_REPO + "/#", REPO_ID);
         matcher.addURI(authority, GitWatchContract.PATH_REPO + "/*", REPO_WITH_IDENTIFIER);
         matcher.addURI(authority, GitWatchContract.PATH_REPO + "/*/*", REPO_WITH_IDENTIFIER_AND_TYPE);
         return matcher;

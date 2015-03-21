@@ -4,6 +4,7 @@ package me.adegokeobasa.gitwatch.fragments;
  * Created by Adegoke Obasa <adegokeobasa@gmail.com> on 3/21/15.
  */
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,9 +20,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import me.adegokeobasa.gitwatch.R;
+import me.adegokeobasa.gitwatch.activities.RepoDetailActivity;
 import me.adegokeobasa.gitwatch.adapters.RepoAdapter;
 import me.adegokeobasa.gitwatch.data.GitWatchContract.RepoEntry;
-import me.adegokeobasa.gitwatch.utils.UIUtils;
 
 /**
  * A landing fragment containing a simple view.
@@ -29,7 +30,7 @@ import me.adegokeobasa.gitwatch.utils.UIUtils;
 public class LandingFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final int REPO_LOADER = 0;
 
-    private static final String[] REPO_COLUMNS = {
+    public static final String[] REPO_COLUMNS = {
             RepoEntry.TABLE_NAME + "." + RepoEntry._ID,
             RepoEntry.COLUMN_IDENTIFIER,
             RepoEntry.COLUMN_TYPE,
@@ -44,6 +45,8 @@ public class LandingFragment extends Fragment implements LoaderManager.LoaderCal
     public static final int COL_NAME = 3;
     public static final int COL_OWNER_NAME = 4;
     public static final int COL_LAST_COMMIT_MSG = 5;
+
+    public static final String EXTRA_REPO_ID = "repo_id";
 
     private RepoAdapter repoAdapter;
 
@@ -66,11 +69,13 @@ public class LandingFragment extends Fragment implements LoaderManager.LoaderCal
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 RepoAdapter cursorAdapter = (RepoAdapter) adapterView.getAdapter();
                 Cursor cursor = cursorAdapter.getCursor();
-
                 if (cursor != null && cursor.moveToFirst()) {
-                    UIUtils.makeToast(getActivity(), "Clicked");
-                }
 
+                    int repoId = cursor.getInt(COL_REPO_ID);
+                    Intent detailIntent = new Intent(getActivity(), RepoDetailActivity.class)
+                            .putExtra(EXTRA_REPO_ID, repoId);
+                    startActivity(detailIntent);
+                }
             }
         });
 

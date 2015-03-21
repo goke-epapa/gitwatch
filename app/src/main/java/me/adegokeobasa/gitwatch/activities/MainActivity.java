@@ -10,7 +10,7 @@ import android.view.MenuItem;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import me.adegokeobasa.gitwatch.AddRepoDialogFragment;
+import me.adegokeobasa.gitwatch.fragments.AddRepoDialogFragment;
 import me.adegokeobasa.gitwatch.R;
 import me.adegokeobasa.gitwatch.data.GitWatchContract;
 import me.adegokeobasa.gitwatch.fragments.LandingFragment;
