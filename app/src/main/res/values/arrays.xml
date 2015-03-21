@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="repo_types">
+        <item>Bitbucket</item>
+        <item>Github</item>
+    </string-array>
+</resources>
