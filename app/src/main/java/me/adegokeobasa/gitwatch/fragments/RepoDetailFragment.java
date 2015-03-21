@@ -15,16 +15,25 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.ShareActionProvider;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
 
 import me.adegokeobasa.gitwatch.R;
+import me.adegokeobasa.gitwatch.adapters.CommitAdapter;
 import me.adegokeobasa.gitwatch.data.GitWatchContract;
-import me.adegokeobasa.gitwatch.utils.UIUtils;
+import me.adegokeobasa.gitwatch.models.Commit;
+import me.adegokeobasa.gitwatch.tasks.FetchRepoDetailTask;
+import me.adegokeobasa.gitwatch.utils.ApiHelper;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -34,6 +43,9 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
     private static final int REPO_LOADER = 0;
     ShareActionProvider mShareActionProvider;
     public static final String SHARE_HASH_TAG = "#GitWatchApp";
+    public static final String TAG = RepoDetailFragment.class.getSimpleName();
+    public static ArrayList<Commit> commits = new ArrayList<Commit>();
+    public static CommitAdapter commitAdapter;
 
     public RepoDetailFragment() {
     }
@@ -42,6 +54,12 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_repo_detail, container, false);
+        ListView commitsListView = (ListView) rootView.findViewById(R.id.list_commits);
+        commitsListView.setEmptyView(rootView.findViewById(R.id.commits_empty));
+
+        commitAdapter = new CommitAdapter(getActivity(), R.layout.list_commit_item, commits);
+        commitsListView.setAdapter(commitAdapter);
+
         setHasOptionsMenu(true);
         return rootView;
     }
@@ -68,11 +86,32 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         if(!data.moveToFirst()){
-            UIUtils.makeToast(getActivity(),"null");
             return;
         }
 
-        UIUtils.makeToast(getActivity(), "Finished Loading.");
+        String repoIdentifier = data.getString(LandingFragment.COL_IDENIFIER);
+        int repoType = data.getInt(LandingFragment.COL_TYPE);
+
+        getActivity().setTitle(data.getString(LandingFragment.COL_NAME));
+
+        String url = repoType == GitWatchContract.RepoEntry.TYPE_BITBUCKET ? ApiHelper.getJsonApiUrl(ApiHelper.getBitbucketUrl(repoIdentifier)) : ApiHelper.getJsonApiUrl(ApiHelper.getGithubUrl(repoIdentifier));
+
+        FetchRepoDetailTask repoDetailTask = new FetchRepoDetailTask(getActivity());
+        repoDetailTask.execute(url);
+
+        TextView repoUsernameTv = (TextView) getView().findViewById(R.id.detail_repo_username);
+        TextView repoNameTv = (TextView) getView().findViewById(R.id.detail_repo_name);
+        TextView repoLastUpdateTimeTv = (TextView) getView().findViewById(R.id.detail_repo_last_updated);
+
+        repoUsernameTv.setText(data.getString(LandingFragment.COL_OWNER_NAME));
+        repoNameTv.setText(data.getString(LandingFragment.COL_NAME));
+        repoLastUpdateTimeTv.setText("Just Now");
+        ImageView repoImageView = (ImageView) getView().findViewById(R.id.detail_repo_image);
+
+        if(repoType == GitWatchContract.RepoEntry.TYPE_GITHUB) {
+            repoImageView.setImageResource(R.drawable.ic_github);
+        }
+        Log.d(TAG, url);
     }
 
     @Override

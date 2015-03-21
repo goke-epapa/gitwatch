@@ -1,12 +1,77 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="me.adegokeobasa.gitwatch.activities.RepoDetailActivity$PlaceholderFragment">
 
-    <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:weightSum="1.0"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/detail_repo_image"
+            android:layout_weight="0.4"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:src="@drawable/ic_bitbucket" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_weight="0.6"
+            android:layout_width="0dp"
+            android:gravity="center_vertical"
+            android:layout_height="match_parent">
+
+
+
+            <TextView
+                android:textSize="24dp"
+                android:id="@+id/detail_repo_name"
+                android:textStyle="bold"
+                android:text="repo_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:textSize="20dp"
+                android:id="@+id/detail_repo_username"
+                android:text="owner_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/detail_repo_last_updated"
+                android:text="last_updated"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+    <TextView
+        android:layout_gravity="center_horizontal"
+        android:textStyle="bold"
+        android:text="@string/commits"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-</RelativeLayout>
+    <ListView
+        android:id="@+id/list_commits"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    
+    <TextView
+        android:gravity="center_horizontal"
+        android:text="Loading commits."
+        android:id="@+id/commits_empty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

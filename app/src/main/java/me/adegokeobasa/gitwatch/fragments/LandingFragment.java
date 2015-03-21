@@ -68,9 +68,8 @@ public class LandingFragment extends Fragment implements LoaderManager.LoaderCal
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 RepoAdapter cursorAdapter = (RepoAdapter) adapterView.getAdapter();
-                Cursor cursor = cursorAdapter.getCursor();
-                if (cursor != null && cursor.moveToFirst()) {
-
+                Cursor cursor = (Cursor) cursorAdapter.getItem(i);
+                if (cursor != null) {
                     int repoId = cursor.getInt(COL_REPO_ID);
                     Intent detailIntent = new Intent(getActivity(), RepoDetailActivity.class)
                             .putExtra(EXTRA_REPO_ID, repoId);
