@@ -22,6 +22,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -60,6 +61,15 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
         commitAdapter = new CommitAdapter(getActivity(), R.layout.list_commit_item, commits);
         commitsListView.setAdapter(commitAdapter);
 
+        commitsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Commit commit = commits.get(i);
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(commit.getUrl()));
+                startActivity(browserIntent);
+            }
+        });
+
         setHasOptionsMenu(true);
         return rootView;
     }
@@ -91,8 +101,6 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
 
         String repoIdentifier = data.getString(LandingFragment.COL_IDENIFIER);
         int repoType = data.getInt(LandingFragment.COL_TYPE);
-
-        getActivity().setTitle(data.getString(LandingFragment.COL_NAME));
 
         String url = repoType == GitWatchContract.RepoEntry.TYPE_BITBUCKET ? ApiHelper.getJsonApiUrl(ApiHelper.getBitbucketUrl(repoIdentifier)) : ApiHelper.getJsonApiUrl(ApiHelper.getGithubUrl(repoIdentifier));
 
