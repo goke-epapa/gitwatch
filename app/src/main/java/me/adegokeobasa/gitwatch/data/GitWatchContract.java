@@ -20,6 +20,10 @@ public class GitWatchContract {
 
         public static final String CONTENT_TYPE =
                 "vnd.android.cursor.dir/" + CONTENT_AUTHORITY + "/" + PATH_REPO;
+
+        public static final String CONTENT_ITEM_TYPE =
+                "vnd.android.cursor.item/" + CONTENT_AUTHORITY + "/" + PATH_REPO;
+
         public static final String TABLE_NAME = "repos";
 
         public static final String COLUMN_REPO_IDENTIFIER = "repo_identifier";
@@ -28,6 +32,10 @@ public class GitWatchContract {
 
         public static Uri buildRepoUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
+
+        public static String getRepoIdentifierFromUri(Uri uri) {
+            return uri.getPathSegments().get(1);
         }
     }
 
