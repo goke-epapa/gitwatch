@@ -47,9 +47,7 @@ public class FetchRepoDetailTask extends AsyncTask<String, Void, Void> {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                UIUtils.makeToast(context, response.toString());
                 RepoDetailFragment.commits.clear();
-
 
                 if(!response.has("responseData")) {
                     UIUtils.makeToast(context, "Invalid response from server");

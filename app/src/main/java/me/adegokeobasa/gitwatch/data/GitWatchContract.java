@@ -44,6 +44,10 @@ public class GitWatchContract {
             return uri.getPathSegments().get(1);
         }
 
+        public static long getRepoIdFromUri(Uri uri) {
+            return ContentUris.parseId(uri);
+        }
+
         public static final int TYPE_BITBUCKET = 1;
         public static final int TYPE_GITHUB = 2;
     }

@@ -1,13 +1,17 @@
 package me.adegokeobasa.gitwatch.activities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import me.adegokeobasa.gitwatch.R;
+import me.adegokeobasa.gitwatch.data.GitWatchContract;
+import me.adegokeobasa.gitwatch.fragments.LandingFragment;
 import me.adegokeobasa.gitwatch.fragments.RepoDetailFragment;
+import me.adegokeobasa.gitwatch.utils.UIUtils;
 
 public class RepoDetailActivity extends ActionBarActivity {
 
@@ -36,8 +40,22 @@ public class RepoDetailActivity extends ActionBarActivity {
             Intent settingsIntent = new Intent(this, SettingsActivity.class);
             startActivity(settingsIntent);
             return true;
+        } else if (id == R.id.action_remove_repo) {
+            removeRepo();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void removeRepo() {
+        if(getIntent().hasExtra(LandingFragment.EXTRA_REPO_ID)) {
+            int repoId = getIntent().getIntExtra(LandingFragment.EXTRA_REPO_ID, 0);
+            Uri repoUri = GitWatchContract.RepoEntry.buildRepoUri(repoId);
+            int rows = getContentResolver().delete(repoUri, null, null);
+            if(rows > 0) {
+                UIUtils.makeToast(this, "Repository has been deleted");
+                finish();
+            }
+        }
     }
 }

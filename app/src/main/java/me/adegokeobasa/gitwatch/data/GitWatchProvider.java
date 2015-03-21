@@ -168,6 +168,12 @@ public class GitWatchProvider extends ContentProvider {
                 rowsDeleted = db.delete(
                         GitWatchContract.RepoEntry.TABLE_NAME, selection, selectionArgs);
                 break;
+            case REPO_ID:
+                long id = GitWatchContract.RepoEntry.getRepoIdFromUri(uri);
+                selectionArgs = new String[]{String.valueOf(id)};
+                rowsDeleted = db.delete(
+                        GitWatchContract.RepoEntry.TABLE_NAME, repoIdSelection, selectionArgs);
+                break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }

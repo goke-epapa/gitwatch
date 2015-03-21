@@ -11,5 +11,6 @@
     <string name="title_activity_repo_detail">RepoDetailActivity</string>
     <string name="share">Share</string>
     <string name="commits">Commits</string>
+    <string name="remove_repo">Remove Repository</string>
 
 </resources>
