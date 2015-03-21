@@ -1,5 +1,7 @@
 package me.adegokeobasa.gitwatch.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -26,7 +28,6 @@ public class RepoDetailActivity extends ActionBarActivity {
         }
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_repo_detail, menu);
@@ -48,14 +49,28 @@ public class RepoDetailActivity extends ActionBarActivity {
     }
 
     private void removeRepo() {
-        if(getIntent().hasExtra(LandingFragment.EXTRA_REPO_ID)) {
-            int repoId = getIntent().getIntExtra(LandingFragment.EXTRA_REPO_ID, 0);
-            Uri repoUri = GitWatchContract.RepoEntry.buildRepoUri(repoId);
-            int rows = getContentResolver().delete(repoUri, null, null);
-            if(rows > 0) {
-                UIUtils.makeToast(this, "Repository has been deleted");
-                finish();
-            }
-        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Are you sure?")
+                .setMessage("All data about this repository will be lost.")
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if(getIntent().hasExtra(LandingFragment.EXTRA_REPO_ID)) {
+                            int repoId = getIntent().getIntExtra(LandingFragment.EXTRA_REPO_ID, 0);
+                            Uri repoUri = GitWatchContract.RepoEntry.buildRepoUri(repoId);
+                            int rows = getContentResolver().delete(repoUri, null, null);
+                            if(rows > 0) {
+                                UIUtils.makeToast(RepoDetailActivity.this, "Repository has been deleted");
+                                finish();
+                            }
+                        }
+                    }
+                });
     }
 }
