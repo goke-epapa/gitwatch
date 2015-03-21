@@ -6,6 +6,8 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import me.adegokeobasa.gitwatch.data.GitWatchContract;
 import me.adegokeobasa.gitwatch.utils.UIUtils;
@@ -22,14 +24,6 @@ public class MainActivity extends ActionBarActivity implements AddRepoDialogFrag
                     .add(R.id.container, new LandingFragment())
                     .commit();
         }
-        ContentValues repoValues = new ContentValues();
-        repoValues.put(GitWatchContract.RepoEntry.COLUMN_IDENTIFIER, "goke_epapa/noapp");
-        repoValues.put(GitWatchContract.RepoEntry.COLUMN_TYPE, GitWatchContract.RepoEntry.TYPE_BITBUCKET);
-        repoValues.put(GitWatchContract.RepoEntry.COLUMN_NAME, "No App");
-        repoValues.put(GitWatchContract.RepoEntry.COLUMN_OWNER_NAME, "Adegoke Obasa");
-        repoValues.put(GitWatchContract.RepoEntry.COLUMN_LAST_COMMIT_MSG, "First Commit");
-
-        getContentResolver().insert(GitWatchContract.RepoEntry.CONTENT_URI,repoValues);
     }
 
 
@@ -59,14 +53,41 @@ public class MainActivity extends ActionBarActivity implements AddRepoDialogFrag
         return super.onOptionsItemSelected(item);
     }
 
-    public void addRepo()
-    {
-        DialogFragment addRepoDialog  = new AddRepoDialogFragment();
+    public void addRepo() {
+        DialogFragment addRepoDialog = new AddRepoDialogFragment();
         addRepoDialog.show(getSupportFragmentManager(), "addRepoDialog");
     }
 
     @Override
     public void onDialogPositiveClick(DialogFragment dialog) {
-        UIUtils.makeToast(this, "Clicked Ok!!!");
+
+        TextView repoIdentifierTv = (TextView) dialog.getDialog().findViewById(R.id.dialog_repo_identifier);
+        repoIdentifierTv.setError(null);
+        Spinner repoTypeSpinner = (Spinner) dialog.getDialog().findViewById(R.id.dialog_repo_type);
+        String repoIdentifier = repoIdentifierTv.getText().toString();
+        if (repoIdentifier == null || repoIdentifier.length() == 0) {
+            repoIdentifierTv.setError("Please enter the repository identifier");
+            return;
+        }
+
+        int repoType;
+        switch (repoTypeSpinner.getSelectedItem().toString().toLowerCase()) {
+            case "github":
+                repoType = GitWatchContract.RepoEntry.TYPE_GITHUB;
+                break;
+            default:
+                repoType = GitWatchContract.RepoEntry.TYPE_BITBUCKET;
+                break;
+        }
+
+        ContentValues repoValues = new ContentValues();
+        repoValues.put(GitWatchContract.RepoEntry.COLUMN_IDENTIFIER, repoIdentifier);
+        repoValues.put(GitWatchContract.RepoEntry.COLUMN_TYPE, repoType);
+        repoValues.put(GitWatchContract.RepoEntry.COLUMN_NAME, repoIdentifier.toUpperCase());
+        repoValues.put(GitWatchContract.RepoEntry.COLUMN_OWNER_NAME, "Adegoke Obasa");
+        repoValues.put(GitWatchContract.RepoEntry.COLUMN_LAST_COMMIT_MSG, "N/A");
+        getContentResolver().insert(GitWatchContract.RepoEntry.CONTENT_URI, repoValues);
+        UIUtils.makeToast(this, "Item Added");
+        dialog.dismiss();
     }
 }

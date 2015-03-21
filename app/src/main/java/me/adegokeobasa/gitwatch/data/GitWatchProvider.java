@@ -73,7 +73,7 @@ public class GitWatchProvider extends ContentProvider {
 
     private static final String repoIdentifierSelection =
             GitWatchContract.RepoEntry.TABLE_NAME+
-                    "." + GitWatchContract.RepoEntry.COLUMN_REPO_IDENTIFIER + " = ? ";
+                    "." + GitWatchContract.RepoEntry.COLUMN_IDENTIFIER + " = ? ";
 
     private Cursor getRepoByRepoIdentifier(Uri uri, String[] projection, String sortOrder) {
         String repoIdentifier = GitWatchContract.RepoEntry.getRepoIdentifierFromUri(uri);

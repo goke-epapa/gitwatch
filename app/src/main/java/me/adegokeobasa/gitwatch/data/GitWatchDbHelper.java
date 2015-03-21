@@ -22,12 +22,13 @@ public class GitWatchDbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         final String SQL_CREATE_REPO_TABLE = "CREATE TABLE " + GitWatchContract.RepoEntry.TABLE_NAME + " (" +
-                GitWatchContract.RepoEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT" +
-                GitWatchContract.RepoEntry.COLUMN_IDENTIFIER + " TEXT NOT NULL" +
-                GitWatchContract.RepoEntry.COLUMN_TYPE + " INTEGER NOT NULL" +
-                GitWatchContract.RepoEntry.COLUMN_NAME + " TEXT NOT NULL" +
-                GitWatchContract.RepoEntry.COLUMN_OWNER_NAME + " TEXT NOT NULL" +
-                GitWatchContract.RepoEntry.COLUMN_LAST_COMMIT_MSG + " TEXT NOT NULL";
+                GitWatchContract.RepoEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                GitWatchContract.RepoEntry.COLUMN_IDENTIFIER + " TEXT NOT NULL," +
+                GitWatchContract.RepoEntry.COLUMN_TYPE + " INTEGER NOT NULL," +
+                GitWatchContract.RepoEntry.COLUMN_NAME + " TEXT NOT NULL," +
+                GitWatchContract.RepoEntry.COLUMN_OWNER_NAME + " TEXT NOT NULL," +
+                GitWatchContract.RepoEntry.COLUMN_LAST_COMMIT_MSG + " TEXT NOT NULL" +
+                ");";
 
         final String SQL_CREATE_COMMITS_TABLE = "";
         sqLiteDatabase.execSQL(SQL_CREATE_REPO_TABLE);
