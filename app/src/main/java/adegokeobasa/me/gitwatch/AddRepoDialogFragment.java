@@ -61,7 +61,7 @@ public class AddRepoDialogFragment extends DialogFragment {
                     public void onClick(DialogInterface dialog, int id) {
                         AddRepoDialogFragment.this.getDialog().cancel();
                     }
-                });
+                }).setTitle("Add Repository");
         return builder.create();
     }
 }
