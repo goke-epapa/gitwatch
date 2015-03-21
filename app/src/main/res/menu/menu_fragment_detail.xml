@@ -5,7 +5,7 @@
     tools:context="me.adegokeobasa.sunshine.app.DetailActivity">
     <item android:id="@+id/action_remove_repo"
         android:title="@string/remove_repo"
-        android:icon="@drawable/ic_action_remove"
+        android:icon="@drawable/ic_action_delete"
         app:showAsAction="always"/>
     <item
         android:id="@+id/action_share"
