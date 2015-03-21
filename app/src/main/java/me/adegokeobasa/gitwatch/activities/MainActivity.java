@@ -1,6 +1,7 @@
 package me.adegokeobasa.gitwatch.activities;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
@@ -47,6 +48,8 @@ public class MainActivity extends ActionBarActivity implements AddRepoDialogFrag
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent settingsIntent = new Intent(this, SettingsActivity.class);
+            startActivity(settingsIntent);
             return true;
         } else if (id == R.id.action_add_repo) {
             addRepo();
@@ -103,7 +106,7 @@ public class MainActivity extends ActionBarActivity implements AddRepoDialogFrag
         UIUtils.makeToast(this, "Repository " + repoName + " has been added. :)");
         wantToCloseDialog = true;
 
-        if(wantToCloseDialog)
+        if (wantToCloseDialog)
             dialog.dismiss();
     }
 }
