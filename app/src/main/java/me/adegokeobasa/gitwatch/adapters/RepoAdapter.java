@@ -37,8 +37,9 @@ public class RepoAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         ViewHolder viewHolder = (ViewHolder) view.getTag();
-        // Read weather icon ID from cursor
-        int weatherId = cursor.getInt(LandingFragment.COL_REPO_ID);
+        int repoId = cursor.getInt(LandingFragment.COL_REPO_ID);
+        int repoType = cursor.getInt(LandingFragment.COL_TYPE);
+        viewHolder.iconView.setImageResource(repoType == 1 ? R.drawable.ic_bitbucket : R.drawable.ic_github);
 
         viewHolder.repoNameView.setText(cursor.getString(LandingFragment.COL_NAME));
         viewHolder.lastCommitMessageView.setText(cursor.getString(LandingFragment.COL_LAST_COMMIT_MSG));
