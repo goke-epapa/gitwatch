@@ -26,7 +26,7 @@ public class GitWatchContract {
 
         public static final String COLUMN_REPO_TYPE = "repo_type";
 
-        public static Uri buildLocationUri(long id) {
+        public static Uri buildRepoUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
     }
