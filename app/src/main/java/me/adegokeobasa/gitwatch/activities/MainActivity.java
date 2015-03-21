@@ -1,4 +1,4 @@
-package me.adegokeobasa.gitwatch;
+package me.adegokeobasa.gitwatch.activities;
 
 import android.content.ContentValues;
 import android.os.Bundle;
@@ -9,6 +9,8 @@ import android.view.MenuItem;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import me.adegokeobasa.gitwatch.AddRepoDialogFragment;
+import me.adegokeobasa.gitwatch.R;
 import me.adegokeobasa.gitwatch.data.GitWatchContract;
 import me.adegokeobasa.gitwatch.fragments.LandingFragment;
 import me.adegokeobasa.gitwatch.utils.StringUtils;
@@ -92,8 +94,8 @@ public class MainActivity extends ActionBarActivity implements AddRepoDialogFrag
         repoValues.put(GitWatchContract.RepoEntry.COLUMN_IDENTIFIER, repoIdentifier);
         repoValues.put(GitWatchContract.RepoEntry.COLUMN_TYPE, repoType);
         String[] arr = repoIdentifier.split("/");
-        String repoName = StringUtils.toTitleCase(arr[0].toLowerCase());
-        String username = StringUtils.toTitleCase(arr[1].toLowerCase());
+        String repoName = StringUtils.toTitleCase(arr[1].toLowerCase());
+        String username = arr[0].toLowerCase();
         repoValues.put(GitWatchContract.RepoEntry.COLUMN_NAME, repoName);
         repoValues.put(GitWatchContract.RepoEntry.COLUMN_OWNER_NAME, username);
         repoValues.put(GitWatchContract.RepoEntry.COLUMN_LAST_COMMIT_MSG, "N/A");

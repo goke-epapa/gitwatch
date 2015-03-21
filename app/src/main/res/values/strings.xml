@@ -8,5 +8,6 @@
     <string name="add_repo">Add Repo</string>
     <string name="repo_identifier_label">Repository Identifier</string>
     <string name="repo_type_label">Repository Type</string>
+    <string name="title_activity_repo_detail">RepoDetailActivity</string>
 
 </resources>

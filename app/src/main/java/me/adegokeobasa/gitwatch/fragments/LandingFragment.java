@@ -15,11 +15,13 @@ import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import me.adegokeobasa.gitwatch.R;
 import me.adegokeobasa.gitwatch.adapters.RepoAdapter;
 import me.adegokeobasa.gitwatch.data.GitWatchContract.RepoEntry;
+import me.adegokeobasa.gitwatch.utils.UIUtils;
 
 /**
  * A landing fragment containing a simple view.
@@ -54,10 +56,23 @@ public class LandingFragment extends Fragment implements LoaderManager.LoaderCal
         repoAdapter = new RepoAdapter(getActivity(), null, 0);
 
         View rootView = inflater.inflate(R.layout.fragment_landing, container, false);
-        ListView reposList = (ListView) rootView.findViewById(R.id.repos_list);
-        reposList.setEmptyView(rootView.findViewById(R.id.repos_list_empty));
+        ListView reposListView = (ListView) rootView.findViewById(R.id.repos_list);
+        reposListView.setEmptyView(rootView.findViewById(R.id.repos_list_empty));
 
-        reposList.setAdapter(repoAdapter);
+        reposListView.setAdapter(repoAdapter);
+
+        reposListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                RepoAdapter cursorAdapter = (RepoAdapter) adapterView.getAdapter();
+                Cursor cursor = cursorAdapter.getCursor();
+
+                if (cursor != null && cursor.moveToFirst()) {
+                    UIUtils.makeToast(getActivity(), "Clicked");
+                }
+
+            }
+        });
 
         return rootView;
     }
