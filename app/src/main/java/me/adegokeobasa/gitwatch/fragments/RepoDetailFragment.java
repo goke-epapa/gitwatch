@@ -15,7 +15,6 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.ShareActionProvider;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -43,10 +42,12 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
 
     private static final int REPO_LOADER = 0;
     ShareActionProvider mShareActionProvider;
-    public static final String SHARE_HASH_TAG = "#GitWatchApp";
+    public static final String SHARE_HASH_TAG = "#GitWatch";
     public static final String TAG = RepoDetailFragment.class.getSimpleName();
     public static ArrayList<Commit> commits = new ArrayList<Commit>();
     public static CommitAdapter commitAdapter;
+    private String repoName;
+    private String repoUrl;
 
     public RepoDetailFragment() {
     }
@@ -111,15 +112,16 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
         TextView repoNameTv = (TextView) getView().findViewById(R.id.detail_repo_name);
         TextView repoLastUpdateTimeTv = (TextView) getView().findViewById(R.id.detail_repo_last_updated);
 
+        repoName = data.getString(LandingFragment.COL_NAME);
         repoUsernameTv.setText(data.getString(LandingFragment.COL_OWNER_NAME));
-        repoNameTv.setText(data.getString(LandingFragment.COL_NAME));
+        repoNameTv.setText(repoName);
         repoLastUpdateTimeTv.setText("Just Now");
         ImageView repoImageView = (ImageView) getView().findViewById(R.id.detail_repo_image);
-
+        repoUrl = ApiHelper.getBitbucketShareUrl(repoIdentifier);
         if(repoType == GitWatchContract.RepoEntry.TYPE_GITHUB) {
+            repoUrl = ApiHelper.getGithubShareUrl(repoIdentifier);
             repoImageView.setImageResource(R.drawable.ic_github);
         }
-        Log.d(TAG, url);
     }
 
     @Override
@@ -133,11 +135,11 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
         super.onActivityCreated(savedInstanceState);
     }
 
-    private Intent createShareForecastIntent() {
+    private Intent createShareForecastIntent(String repoName, String repoUrl) {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         shareIntent.setType("text/plain");
-        shareIntent.putExtra(Intent.EXTRA_TEXT, "Sharing repo " + SHARE_HASH_TAG);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, "Check out my repository " + repoName + " @ " + repoUrl + " " + SHARE_HASH_TAG);
         return shareIntent;
     }
 
@@ -148,9 +150,7 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
 
         MenuItem shareItem = menu.findItem(R.id.action_share);
         mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
-        mShareActionProvider.setShareIntent(new Intent(Intent.ACTION_SEND)
-                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                .setType("text/plain")
-                .putExtra(Intent.EXTRA_TEXT, createShareForecastIntent()));
+        if(repoName != null && repoUrl != null)
+            mShareActionProvider.setShareIntent(createShareForecastIntent(repoName, repoUrl));
     }
 }

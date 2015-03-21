@@ -8,6 +8,7 @@ import android.net.Uri;
 public class ApiHelper {
     public static final String GITHUB_BASE = "github.com";
     public static final String BITBUCKET_BASE = "bitbucket.org";
+    private static String bitbucketShareUrl;
 
     public static String getGithubUrl(String repoIdentifier) {
         Uri.Builder uriBuilder = new Uri.Builder();
@@ -40,4 +41,23 @@ public class ApiHelper {
     }
 
 
+    public static String getGithubShareUrl(String repoIdentifier) {
+        String[] arr = repoIdentifier.split("/");
+        Uri.Builder uriBuilder = new Uri.Builder();
+        uriBuilder.scheme("https")
+                .authority(GITHUB_BASE)
+                .appendPath(arr[0])
+                .appendPath(arr[1]);
+        return uriBuilder.build().toString();
+    }
+
+    public static String getBitbucketShareUrl(String repoIdentifier) {
+        String[] arr = repoIdentifier.split("/");
+        Uri.Builder uriBuilder = new Uri.Builder();
+        uriBuilder.scheme("https")
+                .authority(BITBUCKET_BASE)
+                .appendPath(arr[0])
+                .appendPath(arr[1]);
+        return uriBuilder.build().toString();
+    }
 }

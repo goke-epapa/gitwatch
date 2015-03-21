@@ -61,16 +61,17 @@ public class RepoDetailActivity extends ActionBarActivity {
                 .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        if(getIntent().hasExtra(LandingFragment.EXTRA_REPO_ID)) {
+                        if (getIntent().hasExtra(LandingFragment.EXTRA_REPO_ID)) {
                             int repoId = getIntent().getIntExtra(LandingFragment.EXTRA_REPO_ID, 0);
                             Uri repoUri = GitWatchContract.RepoEntry.buildRepoUri(repoId);
                             int rows = getContentResolver().delete(repoUri, null, null);
-                            if(rows > 0) {
+                            if (rows > 0) {
                                 UIUtils.makeToast(RepoDetailActivity.this, "Repository has been deleted");
                                 finish();
                             }
                         }
                     }
                 });
+        builder.show();
     }
 }
