@@ -1,7 +1,6 @@
 package me.adegokeobasa.gitwatch.activities;
 
 import android.content.ContentValues;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
@@ -10,9 +9,9 @@ import android.view.MenuItem;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import me.adegokeobasa.gitwatch.fragments.AddRepoDialogFragment;
 import me.adegokeobasa.gitwatch.R;
 import me.adegokeobasa.gitwatch.data.GitWatchContract;
+import me.adegokeobasa.gitwatch.fragments.AddRepoDialogFragment;
 import me.adegokeobasa.gitwatch.fragments.LandingFragment;
 import me.adegokeobasa.gitwatch.utils.StringUtils;
 import me.adegokeobasa.gitwatch.utils.UIUtils;
@@ -47,11 +46,7 @@ public class MainActivity extends ActionBarActivity implements AddRepoDialogFrag
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            Intent settingsIntent = new Intent(this, SettingsActivity.class);
-            startActivity(settingsIntent);
-            return true;
-        } else if (id == R.id.action_add_repo) {
+        if (id == R.id.action_add_repo) {
             addRepo();
             return true;
         }
