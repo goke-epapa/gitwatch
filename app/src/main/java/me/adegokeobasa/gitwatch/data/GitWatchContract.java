@@ -26,9 +26,15 @@ public class GitWatchContract {
 
         public static final String TABLE_NAME = "repos";
 
-        public static final String COLUMN_REPO_IDENTIFIER = "repo_identifier";
+        public static final String COLUMN_IDENTIFIER = "identifier";
 
-        public static final String COLUMN_REPO_TYPE = "repo_type";
+        public static final String COLUMN_TYPE = "type";
+
+        public static final String COLUMN_NAME = "name";
+
+        public static final String COLUMN_OWNER_NAME = "owner_name";
+
+        public static final String COLUMN_LAST_COMMIT_MSG = "last_commit_msg";
 
         public static Uri buildRepoUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
@@ -37,6 +43,9 @@ public class GitWatchContract {
         public static String getRepoIdentifierFromUri(Uri uri) {
             return uri.getPathSegments().get(1);
         }
+
+        public static final int TYPE_BITBUCKET = 1;
+        public static final int TYPE_GITHUB = 2;
     }
 
 }

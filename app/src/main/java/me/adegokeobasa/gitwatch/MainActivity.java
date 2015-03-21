@@ -1,11 +1,13 @@
 package me.adegokeobasa.gitwatch;
 
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import me.adegokeobasa.gitwatch.data.GitWatchContract;
 import me.adegokeobasa.gitwatch.utils.UIUtils;
 
 
@@ -20,6 +22,14 @@ public class MainActivity extends ActionBarActivity implements AddRepoDialogFrag
                     .add(R.id.container, new LandingFragment())
                     .commit();
         }
+        ContentValues repoValues = new ContentValues();
+        repoValues.put(GitWatchContract.RepoEntry.COLUMN_IDENTIFIER, "goke_epapa/noapp");
+        repoValues.put(GitWatchContract.RepoEntry.COLUMN_TYPE, GitWatchContract.RepoEntry.TYPE_BITBUCKET);
+        repoValues.put(GitWatchContract.RepoEntry.COLUMN_NAME, "No App");
+        repoValues.put(GitWatchContract.RepoEntry.COLUMN_OWNER_NAME, "Adegoke Obasa");
+        repoValues.put(GitWatchContract.RepoEntry.COLUMN_LAST_COMMIT_MSG, "First Commit");
+
+        getContentResolver().insert(GitWatchContract.RepoEntry.CONTENT_URI,repoValues);
     }
 
 
