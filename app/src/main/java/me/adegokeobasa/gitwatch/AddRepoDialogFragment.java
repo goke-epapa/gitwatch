@@ -1,4 +1,4 @@
-package adegokeobasa.me.gitwatch;
+package me.adegokeobasa.gitwatch;
 
 import android.app.Activity;
 import android.app.AlertDialog;

@@ -1,4 +1,4 @@
-package adegokeobasa.me.gitwatch;
+package me.adegokeobasa.gitwatch;
 
 /**
  * Created by Adegoke Obasa <adegokeobasa@gmail.com> on 3/21/15.

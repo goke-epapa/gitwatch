@@ -1,4 +1,4 @@
-package adegokeobasa.me.gitwatch.data;
+package me.adegokeobasa.gitwatch.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -21,10 +21,10 @@ public class GitWatchDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        final String SQL_CREATE_REPO_TABLE = "CREATE TABLE repos (" +
-                "_id INTEGER PRIMARY KEY AUTOINCREMENT" +
-                "repo_identifier TEXT NOT NULL" +
-                "repo_type INTEGER NOT NULL";
+        final String SQL_CREATE_REPO_TABLE = "CREATE TABLE " + GitWatchContract.RepoEntry.TABLE_NAME + " (" +
+                GitWatchContract.RepoEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT" +
+                GitWatchContract.RepoEntry.COLUMN_REPO_IDENTIFIER + " TEXT NOT NULL" +
+                GitWatchContract.RepoEntry.COLUMN_REPO_TYPE + " INTEGER NOT NULL";
 
         final String SQL_CREATE_COMMITS_TABLE = "";
 
@@ -33,7 +33,7 @@ public class GitWatchDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i2) {
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS repos");
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + GitWatchContract.RepoEntry.TABLE_NAME);
         onCreate(sqLiteDatabase);
     }
 }

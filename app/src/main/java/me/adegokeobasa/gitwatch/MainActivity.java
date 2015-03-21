@@ -1,4 +1,4 @@
-package adegokeobasa.me.gitwatch;
+package me.adegokeobasa.gitwatch;
 
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -6,7 +6,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import adegokeobasa.me.gitwatch.utils.UIUtils;
+import me.adegokeobasa.gitwatch.utils.UIUtils;
 
 
 public class MainActivity extends ActionBarActivity implements AddRepoDialogFragment.AddRepoDialogListener {

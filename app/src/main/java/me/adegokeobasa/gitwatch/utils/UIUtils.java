@@ -1,4 +1,4 @@
-package adegokeobasa.me.gitwatch.utils;
+package me.adegokeobasa.gitwatch.utils;
 
 import android.content.Context;
 import android.widget.Toast;
