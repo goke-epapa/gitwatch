@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import me.adegokeobasa.gitwatch.LandingFragment;
+import me.adegokeobasa.gitwatch.fragments.LandingFragment;
 import me.adegokeobasa.gitwatch.R;
 
 /**

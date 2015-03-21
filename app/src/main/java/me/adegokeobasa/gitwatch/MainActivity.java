@@ -10,6 +10,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import me.adegokeobasa.gitwatch.data.GitWatchContract;
+import me.adegokeobasa.gitwatch.fragments.LandingFragment;
+import me.adegokeobasa.gitwatch.utils.StringUtils;
 import me.adegokeobasa.gitwatch.utils.UIUtils;
 
 
@@ -60,6 +62,7 @@ public class MainActivity extends ActionBarActivity implements AddRepoDialogFrag
 
     @Override
     public void onDialogPositiveClick(DialogFragment dialog) {
+        Boolean wantToCloseDialog = false;
 
         TextView repoIdentifierTv = (TextView) dialog.getDialog().findViewById(R.id.dialog_repo_identifier);
         repoIdentifierTv.setError(null);
@@ -67,6 +70,11 @@ public class MainActivity extends ActionBarActivity implements AddRepoDialogFrag
         String repoIdentifier = repoIdentifierTv.getText().toString();
         if (repoIdentifier == null || repoIdentifier.length() == 0) {
             repoIdentifierTv.setError("Please enter the repository identifier");
+            return;
+        }
+
+        if (repoIdentifier.indexOf('/') == -1 || repoIdentifier.indexOf('/') == 0 || repoIdentifier.indexOf('/') == repoIdentifier.length() - 1) {
+            repoIdentifierTv.setError("Invalid Repository Identifier format.");
             return;
         }
 
@@ -83,11 +91,17 @@ public class MainActivity extends ActionBarActivity implements AddRepoDialogFrag
         ContentValues repoValues = new ContentValues();
         repoValues.put(GitWatchContract.RepoEntry.COLUMN_IDENTIFIER, repoIdentifier);
         repoValues.put(GitWatchContract.RepoEntry.COLUMN_TYPE, repoType);
-        repoValues.put(GitWatchContract.RepoEntry.COLUMN_NAME, repoIdentifier.toUpperCase());
-        repoValues.put(GitWatchContract.RepoEntry.COLUMN_OWNER_NAME, "Adegoke Obasa");
+        String[] arr = repoIdentifier.split("/");
+        String repoName = StringUtils.toTitleCase(arr[0].toLowerCase());
+        String username = StringUtils.toTitleCase(arr[1].toLowerCase());
+        repoValues.put(GitWatchContract.RepoEntry.COLUMN_NAME, repoName);
+        repoValues.put(GitWatchContract.RepoEntry.COLUMN_OWNER_NAME, username);
         repoValues.put(GitWatchContract.RepoEntry.COLUMN_LAST_COMMIT_MSG, "N/A");
         getContentResolver().insert(GitWatchContract.RepoEntry.CONTENT_URI, repoValues);
-        UIUtils.makeToast(this, "Item Added");
-        dialog.dismiss();
+        UIUtils.makeToast(this, "Repository " + repoName + " has been added. :)");
+        wantToCloseDialog = true;
+
+        if(wantToCloseDialog)
+            dialog.dismiss();
     }
 }

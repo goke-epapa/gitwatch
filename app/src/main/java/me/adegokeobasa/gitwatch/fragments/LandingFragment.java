@@ -1,4 +1,4 @@
-package me.adegokeobasa.gitwatch;
+package me.adegokeobasa.gitwatch.fragments;
 
 /**
  * Created by Adegoke Obasa <adegokeobasa@gmail.com> on 3/21/15.
@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import me.adegokeobasa.gitwatch.R;
 import me.adegokeobasa.gitwatch.adapters.RepoAdapter;
 import me.adegokeobasa.gitwatch.data.GitWatchContract.RepoEntry;
 
