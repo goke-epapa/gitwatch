@@ -4,14 +4,27 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity$PlaceholderFragment">
 
-    <TextView
-        android:id="@+id/repos_list_empty"
-        android:text="@string/not_added"
+    <LinearLayout
         android:layout_centerInParent="true"
-        android:padding="10dp"
-        android:gravity="center_horizontal"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:id="@+id/repos_list_empty"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:src="@drawable/ic_action_warning"
+            android:layout_width="50dp"
+            android:layout_height="50dp" />
+
+        <TextView
+            android:textSize="20dp"
+            android:text="@string/not_added"
+            android:padding="10dp"
+            android:gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
     <ListView
         android:id="@+id/repos_list"

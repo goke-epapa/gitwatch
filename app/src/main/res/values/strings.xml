@@ -12,5 +12,6 @@
     <string name="share">Share</string>
     <string name="commits">Commits</string>
     <string name="remove_repo">Remove Repository</string>
+    <string name="add_message">This applicaiton is only compatitble with public repositories.</string>
 
 </resources>
