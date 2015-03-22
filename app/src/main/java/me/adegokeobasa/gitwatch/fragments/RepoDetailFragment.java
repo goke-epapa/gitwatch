@@ -167,6 +167,7 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, repoName + " on GitWatch");
         shareIntent.putExtra(Intent.EXTRA_TEXT, "Check out my repository " + repoName + " @ " + repoUrl + " " + SHARE_HASH_TAG);
         return shareIntent;
     }
