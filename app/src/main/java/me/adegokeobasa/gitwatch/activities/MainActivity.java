@@ -33,7 +33,7 @@ public class MainActivity extends ActionBarActivity implements AddRepoDialogFrag
         setContentView(R.layout.activity_main);
         if (findViewById(R.id.repo_detail_container) != null) {
             mTwoPane = true;
-            
+
             if (savedInstanceState == null) {
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.repo_detail_container, new RepoDetailFragment(), DETAIL_FRAGMENT_TAG)
