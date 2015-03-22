@@ -21,8 +21,15 @@ public class RepoDetailActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_repo_detail);
         if (savedInstanceState == null) {
+            RepoDetailFragment repoDetailFragment = new RepoDetailFragment();
+            if(getIntent().hasExtra(LandingFragment.EXTRA_REPO_ID)) {
+                Bundle args = new Bundle();
+                int repoId = getIntent().getIntExtra(LandingFragment.EXTRA_REPO_ID, 0);
+                args.putInt(LandingFragment.EXTRA_REPO_ID, repoId);
+                repoDetailFragment.setArguments(args);
+            }
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new RepoDetailFragment())
+                    .add(R.id.container, repoDetailFragment)
                     .commit();
         }
     }

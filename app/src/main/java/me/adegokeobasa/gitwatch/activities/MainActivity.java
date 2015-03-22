@@ -13,27 +13,31 @@ import me.adegokeobasa.gitwatch.R;
 import me.adegokeobasa.gitwatch.data.GitWatchContract;
 import me.adegokeobasa.gitwatch.fragments.AddRepoDialogFragment;
 import me.adegokeobasa.gitwatch.fragments.LandingFragment;
+import me.adegokeobasa.gitwatch.fragments.RepoDetailFragment;
 import me.adegokeobasa.gitwatch.utils.StringUtils;
 import me.adegokeobasa.gitwatch.utils.UIUtils;
 
 
 public class MainActivity extends ActionBarActivity implements AddRepoDialogFragment.AddRepoDialogListener {
 
+    private static final String DETAIL_FRAGMENT_TAG = "DFTAG";
     private boolean mTwoPane;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        if (savedInstanceState == null) {
-            if (findViewById(R.id.repo_detail_container) != null) {
-                mTwoPane = true;
-            } else {
+        if (findViewById(R.id.repo_detail_container) != null) {
+            mTwoPane = true;
+            if (savedInstanceState == null) {
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.fragment_landing, new LandingFragment())
+                        .replace(R.id.repo_detail_container, new RepoDetailFragment(), DETAIL_FRAGMENT_TAG)
                         .commit();
             }
+        } else {
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.fragment_landing, new LandingFragment())
+                    .commit();
         }
     }
 

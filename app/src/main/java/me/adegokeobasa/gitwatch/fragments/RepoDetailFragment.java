@@ -59,6 +59,11 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            repoId = arguments.getInt(LandingFragment.EXTRA_REPO_ID);
+        }
+
         View rootView = inflater.inflate(R.layout.fragment_repo_detail, container, false);
         ListView commitsListView = (ListView) rootView.findViewById(R.id.list_commits);
         commitsListView.setEmptyView(rootView.findViewById(R.id.commits_empty));
@@ -84,8 +89,6 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
         if (!getActivity().getIntent().hasExtra(LandingFragment.EXTRA_REPO_ID)) {
             return null;
         }
-
-        repoId = getActivity().getIntent().getIntExtra(LandingFragment.EXTRA_REPO_ID, 0);
 
         Uri repoUri = GitWatchContract.RepoEntry.buildRepoUri(repoId);
 
