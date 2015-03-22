@@ -19,14 +19,21 @@ import me.adegokeobasa.gitwatch.utils.UIUtils;
 
 public class MainActivity extends ActionBarActivity implements AddRepoDialogFragment.AddRepoDialogListener {
 
+    private boolean mTwoPane;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new LandingFragment())
-                    .commit();
+            if (findViewById(R.id.repo_detail_container) != null) {
+                mTwoPane = true;
+            } else {
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.fragment_landing, new LandingFragment())
+                        .commit();
+            }
         }
     }
 
