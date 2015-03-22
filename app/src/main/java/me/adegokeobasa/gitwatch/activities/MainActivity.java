@@ -1,6 +1,9 @@
 package me.adegokeobasa.gitwatch.activities;
 
+import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBarActivity;
@@ -64,8 +67,9 @@ public class MainActivity extends ActionBarActivity implements AddRepoDialogFrag
         if (id == R.id.action_add_repo) {
             addRepo();
             return true;
+        } else if (id == R.id.action_remove_repo) {
+            removeRepo();
         }
-
 
         return super.onOptionsItemSelected(item);
     }
@@ -130,5 +134,38 @@ public class MainActivity extends ActionBarActivity implements AddRepoDialogFrag
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.repo_detail_container, repoDetailFragment, DETAIL_FRAGMENT_TAG)
                 .commit();
+    }
+
+    private void clearDetail()
+    {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.repo_detail_container,  new RepoDetailFragment(), DETAIL_FRAGMENT_TAG)
+                .commit();
+    }
+
+    private void removeRepo() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Are you sure?")
+                .setMessage("All data about this repository will be lost.")
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if (LandingFragment.selectedRepoId != 0) {
+                            Uri repoUri = GitWatchContract.RepoEntry.buildRepoUri(LandingFragment.selectedRepoId);
+                            int rows = getContentResolver().delete(repoUri, null, null);
+                            if (rows > 0) {
+                                UIUtils.makeToast(MainActivity.this, "Repository has been deleted");
+                                clearDetail();
+                            }
+                        }
+                    }
+                });
+        builder.show();
     }
 }

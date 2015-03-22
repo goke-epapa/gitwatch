@@ -87,8 +87,13 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         if (repoId == 0) {
+            getView().findViewById(R.id.detail_empty).setVisibility(View.VISIBLE);
+            getView().findViewById(R.id.content_container).setVisibility(View.INVISIBLE);
             return null;
         }
+
+        getView().findViewById(R.id.content_container).setVisibility(View.VISIBLE);
+        getView().findViewById(R.id.detail_empty).setVisibility(View.GONE);
 
         Uri repoUri = GitWatchContract.RepoEntry.buildRepoUri(repoId);
 

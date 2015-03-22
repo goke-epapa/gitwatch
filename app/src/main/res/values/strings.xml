@@ -13,5 +13,6 @@
     <string name="commits">Commits</string>
     <string name="remove_repo">Remove Repository</string>
     <string name="add_message">This applicaiton is only compatitble with public repositories.</string>
+    <string name="select_repo_msg">Select a repository to view details</string>
 
 </resources>
