@@ -20,9 +20,11 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import me.adegokeobasa.gitwatch.R;
+import me.adegokeobasa.gitwatch.activities.MainActivity;
 import me.adegokeobasa.gitwatch.activities.RepoDetailActivity;
 import me.adegokeobasa.gitwatch.adapters.RepoAdapter;
 import me.adegokeobasa.gitwatch.data.GitWatchContract.RepoEntry;
+import me.adegokeobasa.gitwatch.interfaces.RepoSelectedListener;
 
 /**
  * A landing fragment containing a simple view.
@@ -47,6 +49,8 @@ public class LandingFragment extends Fragment implements LoaderManager.LoaderCal
     public static final int COL_LAST_COMMIT_MSG = 5;
 
     public static final String EXTRA_REPO_ID = "repo_id";
+    public static int selectedRepoId;
+    private RepoSelectedListener listener;
 
     private RepoAdapter repoAdapter;
 
@@ -70,10 +74,14 @@ public class LandingFragment extends Fragment implements LoaderManager.LoaderCal
                 RepoAdapter cursorAdapter = (RepoAdapter) adapterView.getAdapter();
                 Cursor cursor = (Cursor) cursorAdapter.getItem(i);
                 if (cursor != null) {
-                    int repoId = cursor.getInt(COL_REPO_ID);
-                    Intent detailIntent = new Intent(getActivity(), RepoDetailActivity.class)
-                            .putExtra(EXTRA_REPO_ID, repoId);
-                    startActivity(detailIntent);
+                    selectedRepoId = cursor.getInt(COL_REPO_ID);
+                    if(MainActivity.mTwoPane) {
+                        listener.onRepoClicked();
+                    } else {
+                        Intent detailIntent = new Intent(getActivity(), RepoDetailActivity.class)
+                                .putExtra(EXTRA_REPO_ID, selectedRepoId);
+                        startActivity(detailIntent);
+                    }
                 }
             }
         });
@@ -102,5 +110,9 @@ public class LandingFragment extends Fragment implements LoaderManager.LoaderCal
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         repoAdapter.swapCursor(null);
+    }
+
+    public void setListener(RepoSelectedListener listener) {
+        this.listener = listener;
     }
 }

@@ -14,19 +14,20 @@ import me.adegokeobasa.gitwatch.data.GitWatchContract;
 import me.adegokeobasa.gitwatch.fragments.AddRepoDialogFragment;
 import me.adegokeobasa.gitwatch.fragments.LandingFragment;
 import me.adegokeobasa.gitwatch.fragments.RepoDetailFragment;
+import me.adegokeobasa.gitwatch.interfaces.RepoSelectedListener;
 import me.adegokeobasa.gitwatch.utils.StringUtils;
 import me.adegokeobasa.gitwatch.utils.UIUtils;
 
 
-public class MainActivity extends ActionBarActivity implements AddRepoDialogFragment.AddRepoDialogListener {
+public class MainActivity extends ActionBarActivity implements AddRepoDialogFragment.AddRepoDialogListener, RepoSelectedListener{
 
     private static final String DETAIL_FRAGMENT_TAG = "DFTAG";
-    private boolean mTwoPane;
+    public static boolean mTwoPane;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main_tab);
         if (findViewById(R.id.repo_detail_container) != null) {
             mTwoPane = true;
             if (savedInstanceState == null) {
@@ -34,6 +35,9 @@ public class MainActivity extends ActionBarActivity implements AddRepoDialogFrag
                         .replace(R.id.repo_detail_container, new RepoDetailFragment(), DETAIL_FRAGMENT_TAG)
                         .commit();
             }
+            LandingFragment landingFragment =  ((LandingFragment)getSupportFragmentManager()
+                    .findFragmentById(R.id.fragment_landing));
+            landingFragment.setListener(this);
         } else {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment_landing, new LandingFragment())
@@ -114,5 +118,17 @@ public class MainActivity extends ActionBarActivity implements AddRepoDialogFrag
 
         if (wantToCloseDialog)
             dialog.dismiss();
+    }
+
+    @Override
+    public void onRepoClicked() {
+        RepoDetailFragment repoDetailFragment = new RepoDetailFragment();
+        Bundle args = new Bundle();
+        args.putInt(LandingFragment.EXTRA_REPO_ID, LandingFragment.selectedRepoId);
+        repoDetailFragment.setArguments(args);
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.repo_detail_container, repoDetailFragment, DETAIL_FRAGMENT_TAG)
+                .commit();
     }
 }

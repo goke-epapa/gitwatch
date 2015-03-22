@@ -50,7 +50,7 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
     public static CommitAdapter commitAdapter;
     private String repoName;
     private String repoUrl;
-    private long repoId;
+    private long repoId = 0;
     private boolean dataLoaded;
 
     public RepoDetailFragment() {
@@ -62,6 +62,7 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
         Bundle arguments = getArguments();
         if (arguments != null) {
             repoId = arguments.getInt(LandingFragment.EXTRA_REPO_ID);
+            setHasOptionsMenu(true);
         }
 
         View rootView = inflater.inflate(R.layout.fragment_repo_detail, container, false);
@@ -80,13 +81,12 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
             }
         });
 
-        setHasOptionsMenu(true);
         return rootView;
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        if (!getActivity().getIntent().hasExtra(LandingFragment.EXTRA_REPO_ID)) {
+        if (repoId == 0) {
             return null;
         }
 
