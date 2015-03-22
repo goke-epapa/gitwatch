@@ -65,19 +65,35 @@ public class FetchRepoDetailTask {
                             commitsLoadListener.updateRepo();
                         }
                     } catch (JSONException e) {
+                        UIUtils.makeToast(context, "An error occurred while fetching commits");
                         e.printStackTrace();
                     }
                 }
-                progressDialog.dismiss();
+                dismissProgressDialog();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                progressDialog.dismiss();
+                dismissProgressDialog();
                 UIUtils.makeToast(context, "An error occurred while fetching commits");
             }
         });
         requestQueue.add(jsonObjectRequest);
+    }
+
+    private void dismissProgressDialog()
+    {
+        try {
+            if(progressDialog != null && progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
+        } catch (final IllegalArgumentException e) {
+            // Handle or log or ignore
+        } catch (final Exception e) {
+            // Handle or log or ignore
+        } finally {
+            this.progressDialog = null;
+        }
     }
 
     public void setCommitsListener(CommitsLoadListener commitsLoadListener) {

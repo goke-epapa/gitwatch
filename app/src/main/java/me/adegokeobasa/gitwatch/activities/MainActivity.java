@@ -30,9 +30,10 @@ public class MainActivity extends ActionBarActivity implements AddRepoDialogFrag
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_tab);
+        setContentView(R.layout.activity_main);
         if (findViewById(R.id.repo_detail_container) != null) {
             mTwoPane = true;
+            
             if (savedInstanceState == null) {
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.repo_detail_container, new RepoDetailFragment(), DETAIL_FRAGMENT_TAG)

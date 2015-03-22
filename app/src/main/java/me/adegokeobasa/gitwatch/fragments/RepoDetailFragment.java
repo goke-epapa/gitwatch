@@ -36,6 +36,7 @@ import me.adegokeobasa.gitwatch.interfaces.CommitsLoadListener;
 import me.adegokeobasa.gitwatch.models.Commit;
 import me.adegokeobasa.gitwatch.tasks.FetchRepoDetailTask;
 import me.adegokeobasa.gitwatch.utils.ApiHelper;
+import me.adegokeobasa.gitwatch.utils.UIUtils;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -92,9 +93,6 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
             return null;
         }
 
-        getView().findViewById(R.id.content_container).setVisibility(View.VISIBLE);
-        getView().findViewById(R.id.detail_empty).setVisibility(View.GONE);
-
         Uri repoUri = GitWatchContract.RepoEntry.buildRepoUri(repoId);
 
         return new CursorLoader(
@@ -111,6 +109,9 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
         if(!data.moveToFirst()){
             return;
         }
+
+        getView().findViewById(R.id.content_container).setVisibility(View.VISIBLE);
+        getView().findViewById(R.id.detail_empty).setVisibility(View.GONE);
 
         String repoIdentifier = data.getString(LandingFragment.COL_IDENIFIER);
         int repoType = data.getInt(LandingFragment.COL_TYPE);
@@ -170,8 +171,11 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
 
         MenuItem shareItem = menu.findItem(R.id.action_share);
         mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
-        if(repoName != null && repoUrl != null)
+        if(repoName != null && repoUrl != null) {
             mShareActionProvider.setShareIntent(createShareForecastIntent(repoName, repoUrl));
+        } else {
+            UIUtils.makeToast(getActivity(), "Unable to load menu");
+        }
     }
 
     @Override
@@ -183,8 +187,10 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
     public void updateRepo() {
         ContentValues contentValues = new ContentValues();
         contentValues.put(GitWatchContract.RepoEntry.COLUMN_LAST_COMMIT_MSG, commits.get(commits.size() -1).getTitle());
-        getActivity().getContentResolver().update(
-                GitWatchContract.RepoEntry.buildRepoUri(repoId),
-                contentValues, null, null);
+        if(getActivity() != null) {
+            getActivity().getContentResolver().update(
+                    GitWatchContract.RepoEntry.buildRepoUri(repoId),
+                    contentValues, null, null);
+        }
     }
 }
