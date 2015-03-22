@@ -24,4 +24,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:21.0.3'
     compile 'com.android.support:support-v4:21.0.3'
     compile project(':volley')
+    compile files('libs/ocpsoft-pretty-time-1.0.7.jar')
 }

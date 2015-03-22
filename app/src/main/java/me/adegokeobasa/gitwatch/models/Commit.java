@@ -1,7 +1,15 @@
 package me.adegokeobasa.gitwatch.models;
 
+import com.ocpsoft.pretty.time.PrettyTime;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by Adegoke Obasa <adegokeobasa@gmail.com> on 3/21/15.
@@ -63,6 +71,18 @@ public class Commit {
         this.date = date;
     }
 
+    private static String getFormattedTime(String rawDate) {
+        DateFormat dateFormatterRssPubDate = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.ENGLISH);
+        try {
+            Date date = dateFormatterRssPubDate.parse(rawDate);
+            PrettyTime prettyTime = new PrettyTime();
+            return prettyTime.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return rawDate;
+        }
+    }
+
     public static Commit fromJson(JSONObject json)
             throws JSONException
     {
@@ -71,7 +91,7 @@ public class Commit {
         commit.setTitle(json.getString("title"));
         commit.setContent(json.getString("contentSnippet"));
         commit.setUrl(json.getString("link"));
-        commit.setDate(json.getString("publishedDate"));
+        commit.setDate(getFormattedTime(json.getString("publishedDate")));
         return commit;
     }
 }

@@ -15,12 +15,14 @@
         android:text="Title" />
 
     <TextView
+        android:textStyle="bold"
         android:id="@+id/commit_author"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Author" />
 
     <TextView
+        android:textSize="12dp"
         android:id="@+id/commit_publish_date"
         android:layout_gravity="right"
         android:layout_width="wrap_content"

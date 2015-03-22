@@ -17,7 +17,7 @@
         android:layout_height="match_parent" />
 
     <LinearLayout
-        android:layout_weight="0.5"
+        android:layout_weight="0.55"
         android:orientation="vertical"
         android:layout_gravity="center_vertical"
         android:layout_width="0dp"
@@ -37,11 +37,12 @@
             android:textColor="#1369EA"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
             android:text="Last Commit Message" />
     </LinearLayout>
 
     <TextView
-        android:layout_weight="0.3"
+        android:layout_weight="0.25"
         android:singleLine="true"
         android:id="@+id/owner_name"
         android:gravity="center_vertical|right"

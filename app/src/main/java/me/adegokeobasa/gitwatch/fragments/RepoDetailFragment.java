@@ -36,7 +36,6 @@ import me.adegokeobasa.gitwatch.interfaces.CommitsLoadListener;
 import me.adegokeobasa.gitwatch.models.Commit;
 import me.adegokeobasa.gitwatch.tasks.FetchRepoDetailTask;
 import me.adegokeobasa.gitwatch.utils.ApiHelper;
-import me.adegokeobasa.gitwatch.utils.UIUtils;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -133,9 +132,17 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
             repoImageView.setImageResource(R.drawable.ic_github);
         }
 
+        setSharedIntent();
+
         if(!dataLoaded) {
             fetchCommits(url);
             dataLoaded = true;
+        }
+    }
+
+    private void setSharedIntent() {
+        if(repoName != null && repoUrl != null && mShareActionProvider != null) {
+            mShareActionProvider.setShareIntent(createShareForecastIntent(repoName, repoUrl));
         }
     }
 
@@ -171,11 +178,7 @@ public class RepoDetailFragment extends Fragment implements LoaderManager.Loader
 
         MenuItem shareItem = menu.findItem(R.id.action_share);
         mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareItem);
-        if(repoName != null && repoUrl != null) {
-            mShareActionProvider.setShareIntent(createShareForecastIntent(repoName, repoUrl));
-        } else {
-            UIUtils.makeToast(getActivity(), "Unable to load menu");
-        }
+        setSharedIntent();
     }
 
     @Override
