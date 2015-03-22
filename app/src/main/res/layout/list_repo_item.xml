@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:text="Repository Name" />
+            android:text="@string/repo_name" />
 
         <TextView
             android:textSize="12dp"
@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:text="Last Commit Message" />
+            android:text="@string/repo_last_commit_message" />
     </LinearLayout>
 
     <TextView
@@ -48,6 +48,6 @@
         android:gravity="center_vertical|right"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:text="Owner Name" />
+        android:text="@string/repo_owner_name" />
 
 </LinearLayout>

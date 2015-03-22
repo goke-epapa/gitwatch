@@ -10,16 +10,17 @@
 
     <TextView
         android:id="@+id/commit_title"
+        android:textColor="#1369EA"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Title" />
+        android:text="@string/commit_title" />
 
     <TextView
         android:textStyle="bold"
         android:id="@+id/commit_author"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Author" />
+        android:text="@string/commit_author" />
 
     <TextView
         android:textSize="12dp"
@@ -27,6 +28,6 @@
         android:layout_gravity="right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="PublishDate" />
+        android:text="@string/commit_publish_date" />
 
 </LinearLayout>

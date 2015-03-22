@@ -14,5 +14,14 @@
     <string name="remove_repo">Remove Repository</string>
     <string name="add_message">This applicaiton is only compatitble with public repositories.</string>
     <string name="select_repo_msg">Select a repository to view details</string>
+    <string name="commit_title">Title</string>
+    <string name="commit_author">Author</string>
+    <string name="commit_publish_date">PublishDate</string>
+    <string name="repo_owner_name">Owner Name</string>
+    <string name="repo_last_commit_message">Last Commit Message</string>
+    <string name="repo_name">Repository Name</string>
+    <string name="repo_detail_owner">owner_username</string>
+    <string name="repo_detail_last_updated">last_updated</string>
+    <string name="repo_detail_name">repo_name</string>
 
 </resources>

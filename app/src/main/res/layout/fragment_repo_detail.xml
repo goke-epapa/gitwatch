@@ -50,21 +50,21 @@
                     android:textSize="24dp"
                     android:id="@+id/detail_repo_name"
                     android:textStyle="bold"
-                    android:text="repo_name"
+                    android:text="@string/repo_detail_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
                 <TextView
                     android:textSize="20dp"
                     android:id="@+id/detail_repo_username"
-                    android:text="owner_username"
+                    android:text="@string/repo_detail_owner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
                 <TextView
                     android:visibility="gone"
                     android:id="@+id/detail_repo_last_updated"
-                    android:text="last_updated"
+                    android:text="@string/repo_detail_last_updated"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>
